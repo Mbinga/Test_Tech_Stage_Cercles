@@ -12,10 +12,11 @@ export const floorsNumber = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
 function App() {
     //la state qui gère l'étage où l'ascenseur est présent
     const [currentAssessorFloor, setCurrentAssessorFloor] = useState(3);
-    //la state qui gère l'étage sélectionné
+    //la state qui gère l'étage sélectionné (stocke dans un tableau les étages si il y en a plusieurs séléctionnés)
     const [currentFloorSelected, setCurrentFloorSelected] = useState([]);
     const [isOpenDoor, setIsOpenDoor] = useState(true);
 
+    //La fonction qui s'enclenche lors d'un click sur un bouton (ferme la porte et provoque le départ de l'ascenseur)
     const selectFloor = (selectedFloor) => {
         setIsOpenDoor(false);
         setCurrentFloorSelected([...currentFloorSelected, selectedFloor]);
@@ -30,6 +31,7 @@ function App() {
             if (isOpenDoor) {
                 setIsOpenDoor(false);
             }
+            // je fais progesser l'ascenseur en fonction de l'étage sélectionné (stocké dans le 1er élément de mon tableau)
             if (currentAssessorFloor > currentFloorSelected[0]) {
                 setTimeout(
                     () => setCurrentAssessorFloor(currentAssessorFloor - 1),
@@ -44,9 +46,11 @@ function App() {
         }
         //
         if (currentAssessorFloor === currentFloorSelected[0]) {
+            // si il y a plus qu'un seul élément dans mon tableau, on est au bon étage (grace à ma condition au dessus)
             if (currentFloorSelected.length === 1) {
                 setIsOpenDoor(true);
                 setCurrentFloorSelected([]);
+                // sinon on supprime l'étage en cours de mon tableau une fois les 5 secondes attendues
             } else if (currentFloorSelected.length > 1) {
                 setIsOpenDoor(true);
                 setTimeout(
